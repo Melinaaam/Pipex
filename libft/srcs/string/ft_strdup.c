@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melina <melina@student.42.fr>              +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:27:57 by memotyle          #+#    #+#             */
-/*   Updated: 2024/10/12 23:32:59 by melina           ###   ########.fr       */
+/*   Updated: 2024/10/25 15:29:48 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,43 @@
 
 char	*ft_strdup(const char *s)
 {
-	char	*copy;
-	int		len_s;
+	char	*dup;
 	int		i;
 
-	len_s = ft_strlen((char *)s);
-	copy = malloc((len_s + 1) * sizeof(char));
 	i = 0;
-	if (!copy)
+	while (s[i])
+		i++;
+	dup = (char *)malloc(sizeof(char) * (i + 1));
+	if (!dup)
 		return (NULL);
+	i = 0;
 	while (s[i])
 	{
-		copy[i] = s[i];
+		dup[i] = s[i];
 		i++;
 	}
-	copy[i] = '\0';
-	return (copy);
+	dup[i] = '\0';
+	return (dup);
 }
+
+// {
+// 	char	*copy;
+// 	int		len_s;
+// 	int		i;
+
+// 	len_s = ft_strlen((char *)s);
+// 	copy = malloc((len_s + 1) * sizeof(char));
+// 	i = 0;
+// 	if (!copy)
+// 		return (NULL);
+// 	while (s[i])
+// 	{
+// 		copy[i] = s[i];
+// 		i++;
+// 	}
+// 	copy[i] = '\0';
+// 	return (copy);
+// }
 
 /*
 #include <stdio.h>

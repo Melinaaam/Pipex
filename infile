@@ -1,0 +1,10 @@
+Prérequis
+Votre projet doit respecter les règles suivantes :
+• Vous devez rendre un Makefile qui compilera vos fichiers sources. Il ne doit pas
+relink.
+• Vous devez gérer les erreurs avec du bon sens. En aucun cas votre programme ne
+doit quitter de manière inattendue (erreur de segmentation, erreur de bus, double
+free, etc.).
+• Votre programme ne doit pas avoir de fuites de mémoire.
+• Si vous avez le moindre doute, référez-vous à la commande shell :
+< file1 cmd1 | cmd2 > file

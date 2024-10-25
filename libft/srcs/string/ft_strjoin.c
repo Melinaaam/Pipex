@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 13:54:53 by memotyle          #+#    #+#             */
-/*   Updated: 2024/10/21 13:15:54 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/10/24 16:18:52 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2[j])
 		fusion[i++] = s2[j++];
 	fusion[i] = '\0';
-	free(s1);
+	// free(s1);
 	return (fusion);
 }

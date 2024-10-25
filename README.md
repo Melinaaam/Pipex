@@ -21,7 +21,7 @@ https://www.youtube.com/watch?v=tcYo6hipaSA&list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3k
 				0						1
 
 We want :
-
+<br>
 ./pipex			Infile--->cmd1------->cmd2--->Outfile
 STD				0			1		0			1
 				|			|		|			|
