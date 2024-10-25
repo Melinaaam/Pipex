@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:20:26 by memotyle          #+#    #+#             */
-/*   Updated: 2024/10/25 15:52:51 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/10/25 17:27:42 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,6 @@ void	parent_p(char **av, int *fd, char **env);
 //pipex
 char	**path_cmd(char **env);
 void	free_path(char **path);
+char	*check_cmd(char **path, char *cmd);
+void	ex_cmd(char *path, char **env, char **av);
 #endif

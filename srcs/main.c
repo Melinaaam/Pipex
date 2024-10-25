@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:19:39 by memotyle          #+#    #+#             */
-/*   Updated: 2024/10/25 16:28:47 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/10/25 17:28:38 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	child_p(char **av, int *fd, char **env)
 	{
 		close (fd[0]);
 		close (fd[1]);
-		//free_path;
+		free_path(path);
 		exit(EXIT_FAILURE);
 	}
 	dup2(infile, STDIN_FILENO);
@@ -53,7 +53,7 @@ void	child_p(char **av, int *fd, char **env)
 	close (infile); //close fichier infile apres l'avoir lu
 	close (fd[1]);//fermer ecriture tube
 	//execute cmd : execute(path, env, av[2]);
-	execve(*path, &av[2], env);
+	ex_cmd(*path, env, &av[2]);
 }
 
 void	parent_p(char **av, int *fd, char **env)
@@ -71,7 +71,7 @@ void	parent_p(char **av, int *fd, char **env)
 	{
 		close (fd[0]);
 		close (fd[1]);
-		//free_path;
+		free_path(path);
 		exit(EXIT_FAILURE);
 	}
 	dup2(outfile, STDOUT_FILENO);
@@ -79,8 +79,8 @@ void	parent_p(char **av, int *fd, char **env)
 
 	close (outfile);
 	close(fd[1]);//ferme tube d'ecriture
-	//execute cmd : execute(path, env, av[3]);
-	execve(*path, &av[3], env);
+	ex_cmd(*path, env, &av[3]);
+	//execve(*path, &av[3], env);
 }
 
 int	main(int ac, char **av, char **env)
