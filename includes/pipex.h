@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:20:26 by memotyle          #+#    #+#             */
-/*   Updated: 2024/10/25 17:27:42 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/10/28 12:34:16 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <sys/wait.h>
+# include <errno.h>
+# include <string.h>
 
 # define RESET "\e[0m"
 # define RED "\e[1;91m"

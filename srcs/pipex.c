@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 15:11:22 by memotyle          #+#    #+#             */
-/*   Updated: 2024/10/25 17:33:57 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/10/28 13:54:42 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,8 @@ char	**path_cmd(char **env)
 	}
 	else{
 		split_path = ft_split(full_path, ':');
-		i = 0;
-		ft_printf(MAGENTA "after split:\n" RESET);
-		while(split_path[i])
-			ft_printf(MAGENTA "split_path : %s\n" RESET, split_path[i++]);
 		free(full_path);
 	}
-	ft_printf(CYAN "IHERE\n" RESET);
-	i = 0;
-	while(split_path[i])
-		ft_printf(GREEN "split_path before return: %s\n" RESET, split_path[i++]);
 	return (split_path);
 }
 
@@ -57,6 +49,8 @@ char	**path_cmd(char **env)
 //ft pour executer cmd?
 void	ex_cmd(char *path, char **env, char **av)
 {
+	printf(GREEN "ex cmd\n" RESET);
+
 	char	*cmd_path;
 	char	**cmd;
 

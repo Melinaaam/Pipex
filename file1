@@ -1,4 +1,4 @@
-Prérequis
+II.2 Prérequis
 Votre projet doit respecter les règles suivantes :
 • Vous devez rendre un Makefile qui compilera vos fichiers sources. Il ne doit pas
 relink.
@@ -7,4 +7,4 @@ doit quitter de manière inattendue (erreur de segmentation, erreur de bus, doub
 free, etc.).
 • Votre programme ne doit pas avoir de fuites de mémoire.
 • Si vous avez le moindre doute, référez-vous à la commande shell :
-< file1 cmd1 | cmd2 > file
+< file1 cmd1 | cmd2 > file2
