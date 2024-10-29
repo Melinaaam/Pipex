@@ -66,6 +66,7 @@ creates a child processs by duplicating he current process.
 The current process continu his execution and the child process  execute his execution.
 
 The parent proess receive the PID of the child process as return from fork and the child process receive 0 as return from fork.
+```
 
 ```
 excecve() :
@@ -79,9 +80,9 @@ He takes 3 av :
 	- a string area of the environement
 
 Excecve never return expet error
-
 ```
 
+```
 dup2() :
 
 dulicate a file descriptor to replace it with another. Useful for redirecting standard inputs and outputs.
