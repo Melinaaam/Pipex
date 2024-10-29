@@ -91,3 +91,9 @@ dup2(pipefd[1], STDOUT_FILENO)
 redirects standard output to the write pipe.
 ```
 
+```
+waitpid() :
+
+Dans les systèmes d'exploitation informatiques, un processus (ou une tâche) peut attendre qu'un autre processus termine son exécution. Dans la plupart des systèmes, un processus parent peut créer un processus enfant s'exécutant indépendamment. Le processus parent peut alors émettre un appel système d'attente, qui suspend l'exécution du processus parent pendant que l'enfant s'exécute. Lorsque le processus enfant se termine, il renvoie un état de sortie au système d'exploitation, qui est ensuite renvoyé au processus parent en attente. Le processus parent reprend ensuite l'exécution.[1].
+```
+
