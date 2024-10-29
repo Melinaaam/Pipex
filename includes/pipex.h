@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:20:26 by memotyle          #+#    #+#             */
-/*   Updated: 2024/10/28 12:34:16 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/10/29 11:57:14 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <sys/wait.h>
 # include <errno.h>
 # include <string.h>
+# include <sys/types.h>
+# include <stdlib.h>
 
 # define RESET "\e[0m"
 # define RED "\e[1;91m"
@@ -36,7 +38,9 @@ void	parent_p(char **av, int *fd, char **env);
 
 //pipex
 char	**path_cmd(char **env);
-void	free_path(char **path);
-char	*check_cmd(char **path, char *cmd);
-void	ex_cmd(char *path, char **env, char **av);
+void	ex_cmd(char **path, char **env, char *av);
+char	*check_cmd(char **path, char *cmd, char *temp);
+void	free_and_exit(char **path, char **cmd, char *tmp);
+void	free_path(char **path, char **cmd, char *tmp);
+void	error(int *fd, char *av, char **path);
 #endif

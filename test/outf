@@ -1,0 +1,16 @@
+middle_fail.sh
+no_r_perm
+no_w_perm
+no_x_script.sh
+outf
+pipex
+pipex_err.txt
+pipex_out.txt
+pipex_tester
+script"quote.sh
+script.sh
+script space.sh
+tester_pipex.sh
+test_pipex.sh
+true_pipe_err.txt
+true_pipe_out.txt

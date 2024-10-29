@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 15:11:22 by memotyle          #+#    #+#             */
-/*   Updated: 2024/10/28 13:54:42 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:00:33 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ char	**path_cmd(char **env)
 	i = 0;
 	while(env[i])
 	{
-		if (env[i][0] == 'P' && env[i][1] == 'A' && env[i][2] == 'T' && env[i][3] == 'H' & env[i][4] == '=')
+		if (ft_strnstr(env[i], "PATH=", 5))
 		{
 			full_path = ft_strdup(env[i] + 5);
-			ft_printf(BLUE "full_path : %s\n\n" RESET, full_path);
+			// ft_printf(BLUE "full_path : %s\n\n" RESET, full_path);
 			if (!full_path)
 				return (NULL);
 			break;
@@ -46,68 +46,90 @@ char	**path_cmd(char **env)
 }
 
 
-//ft pour executer cmd?
-void	ex_cmd(char *path, char **env, char **av)
+//ft pour executer cmd : utiiation de execve
+	//remplace le processus actuel par un nouveau proramme
+	//utilise par le p enfant apres l'appel a fork pourexeuter une commane
+void	ex_cmd(char **path, char **env, char *av)
 {
-	printf(GREEN "ex cmd\n" RESET);
-
 	char	*cmd_path;
+	char	*temp;
 	char	**cmd;
 
-	cmd = ft_split(*av, ' ');
-	cmd_path = check_cmd(&path, *cmd);
+	cmd = ft_split(av, ' ');
+	temp = ft_strjoin("/",cmd[0]);
+	if (!temp | !cmd | !*cmd)
+		return (free_and_exit(path, cmd, temp));
+
+	cmd_path = check_cmd(path, *cmd, temp);
 	if (!cmd_path)
-	{
-		free_path(&path);
-		exit(EXIT_FAILURE);
-	}
+		return (free_and_exit(path, cmd, temp));
 	if (cmd_path[0] == '\0')
 	{
 		free(cmd_path);
 		cmd_path = ft_strdup(*cmd);
 	}
 	if (execve(cmd_path, cmd, env) == -1)
-	{
-		free_path(&path);
-		exit(EXIT_FAILURE);
-	}
-	free(path);
-	free(cmd);
-	free(cmd_path);
+		return (free(cmd_path), free_and_exit(path, cmd, temp));
+	return (free(cmd_path), free_path(path, cmd, temp));
 }
 
-char	*check_cmd(char **path, char *cmd)
+char	*check_cmd(char **path, char *cmd, char *temp)
 {
 	char	*path_cmd;
 	int		i;
 
 	i = 0;
-	while(path[i])
+	if(!temp | !cmd | !*path | !path)
+		return (NULL);
+	while(path[i] && path)
 	{
-		path_cmd = malloc(ft_strlen(path[i] + ft_strlen(cmd) + 2));
+		path_cmd = ft_strjoin(path[i], temp);
 		if (!path_cmd)
 			return (NULL);
-		ft_strlcpy(path_cmd, path[i], ft_strlen(path[i]));
-		ft_strlcat(path_cmd, "/", sizeof(char));
-		ft_strlcat(path_cmd, cmd, ft_strlen(cmd));
 		if (access(path_cmd, F_OK | X_OK) == 0)
 			return (path_cmd);
 		free(path_cmd);
 		i++;
 	}
-	return (NULL);
+	return (ft_strdup(""));
 }
 
-void	free_path(char **path)
+void	free_and_exit(char **path, char **cmd, char *temp)
+{
+	if (*cmd && cmd)
+		perror(*cmd);
+	free_path(path, cmd, temp);
+	exit(EXIT_FAILURE);
+}
+
+void	free_path(char **path, char **cmd, char *temp)
 {
 	int	i;
 
 	i = 0;
 	if(path)
 	{
-		free(path[i]);
-		i++;
+		while (path[i])
+			free(path[i++]);
+		free(path);
 	}
-	free(path);
-	path = NULL;
+	i = 0;
+	if (cmd)
+	{
+		while (cmd[i])
+			free(cmd[i++]);
+		free(cmd);
+	}
+	if (temp)
+		free(temp);
+}
+
+
+void	error(int *fd, char *av, char **path)
+{
+	close(fd[0]);
+	close(fd[1]);
+	free_path(path, NULL, NULL);
+	perror(av);
+	exit(EXIT_FAILURE);
 }
