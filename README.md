@@ -31,7 +31,6 @@ STD				0			1		0			1
 							fd[1]
 <br>
 
-<br>
 
 Copy of a program that is running. A program is just file on the computer that does nothing until it is started. A process is the same program but once it is launched. When it is launched, the operating system gives it a unique identifier: PID (Process ID). This identifier allows the system to know which process is doing what.
 
