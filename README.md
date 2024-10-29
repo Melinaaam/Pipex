@@ -28,9 +28,9 @@ Pipe()
 |	|
 |	|
 |	|-------------first_child;//cmd1
-|					|
-|					|--dup2();
-|					|--excecve(path,**string_av, **env);
+|				|
+|				|--dup2();
+|				|--excecve(path,**string_av, **env);
 |-------pid2 = fork();
 |	|
 |	|
