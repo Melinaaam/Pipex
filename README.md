@@ -36,7 +36,6 @@ Pipe()
 |	|
 |	|--------------second_child;//cmd2
 |			|
-|			|
 |			|--dup2();
 |			|--excecve(path,**string_av, **env);
 |
