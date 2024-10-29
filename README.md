@@ -25,20 +25,20 @@ Pipe()
 |
 |
 |-------pid1 = fork();
-|				|
-|				|
-|				|-------------first_child;//cmd1
-|								|
-|								|--dup2();
-|								|--excecve(path,**string_av, **env);
+|	|
+|	|
+|	|-------------first_child;//cmd1
+|					|
+|					|--dup2();
+|					|--excecve(path,**string_av, **env);
 |-------pid2 = fork();
-|				|
-|				|
-|				|--------------second_child;//cmd2
-|								|
-|								|
-|								|--dup2();
-|								|--excecve(path,**string_av, **env);
+|	|
+|	|
+|	|--------------second_child;//cmd2
+|					|
+|					|
+|					|--dup2();
+|					|--excecve(path,**string_av, **env);
 |
 |
 |-------waitpid;//pid1
