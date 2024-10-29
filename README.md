@@ -94,6 +94,10 @@ redirects standard output to the write pipe.
 ```
 waitpid() :
 
-Dans les systèmes d'exploitation informatiques, un processus (ou une tâche) peut attendre qu'un autre processus termine son exécution. Dans la plupart des systèmes, un processus parent peut créer un processus enfant s'exécutant indépendamment. Le processus parent peut alors émettre un appel système d'attente, qui suspend l'exécution du processus parent pendant que l'enfant s'exécute. Lorsque le processus enfant se termine, il renvoie un état de sortie au système d'exploitation, qui est ensuite renvoyé au processus parent en attente. Le processus parent reprend ensuite l'exécution.[1].
+In computer operating systems, a process (or task) may wait for another process to complete its execution.
+In most systems, a parent process can create an independently executing child process.
+The parent process may then issue a wait system call, which suspends the execution of the parent process while the child executes.
+When the child process terminates, it returns an exit status to the operating system, which is then returned to the waiting parent process.
+The parent process then resumes execution.[1]
 ```
 
