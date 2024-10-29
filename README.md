@@ -18,7 +18,7 @@ https://www.youtube.com/watch?v=tcYo6hipaSA&list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3k
 
 
 				STDIN------>cmd------>STDOUT
-				0						1
+				0	1
 
 We want :
 
