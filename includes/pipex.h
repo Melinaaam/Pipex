@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:20:26 by memotyle          #+#    #+#             */
-/*   Updated: 2024/10/29 11:57:14 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:25:35 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,13 @@ char	*check_cmd(char **path, char *cmd, char *temp);
 void	free_and_exit(char **path, char **cmd, char *tmp);
 void	free_path(char **path, char **cmd, char *tmp);
 void	error(int *fd, char *av, char **path);
+
+//utils
+size_t	ftt_strlen(const char *s);
+char	*ftt_strnstr(const char *big, const char *little, size_t len);
+char	*ftt_strdup(const char *s);
+char	*ftt_substr(char const *s, unsigned int start, size_t len);
+char	*ftt_strjoin(char const *s1, char const *s2);
+char	**ftt_split(char const *s, char c);
 #endif
+

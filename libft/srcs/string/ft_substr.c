@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:33:29 by memotyle          #+#    #+#             */
-/*   Updated: 2024/09/27 17:20:31 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:35:21 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,23 @@
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*ns;
+	char	*sub;
 	size_t	len_s;
 	size_t	i;
 
 	i = 0;
 	if (!s)
 		return (NULL);
-	len_s = ft_strlen((char *)s);
+	len_s = ft_strlen(s);
 	if (start >= len_s)
-		return ("");
+		return (ft_strdup(""));
 	if (len > len_s - start)
 		len = len_s - start;
-	ns = (char *)malloc(sizeof(char) * (len + 1));
-	if (!ns)
+	sub = (char *)malloc(sizeof(char) * (len + 1));
+	if (!sub)
 		return (NULL);
-	while (s[start] != '\0' && i < len)
-		ns[i++] = s[start++];
-	return (ns);
+	while (s[start] != '\0' && i < len && len != 0)
+		sub[i++] = s[start++];
+	sub[i] = '\0';
+	return (sub);
 }

@@ -6,22 +6,21 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:07:59 by memotyle          #+#    #+#             */
-/*   Updated: 2024/09/27 11:12:59 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/10/29 15:44:35 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
 
-static char	**libere_tab(char **tab, int i)
+static void	free_tab(char **tab, int i)
 {
-	while (i >= 0)
+	while (i >= 0 && tab[i])
 	{
 		free(tab[i]);
 		i--;
 	}
 	free(tab);
-	return (NULL);
 }
 
 static int	count_words(const char *s, char c)
@@ -36,76 +35,58 @@ static int	count_words(const char *s, char c)
 		if (s[i] != c)
 		{
 			count_words++;
-			while (s[i] != c && s[i] != '\0')
+			while (s[i] != '\0' && s[i] != c)
 				i++;
 		}
+		if (s[i] == '\0')
+			return (count_words);
 		else
 			i++;
 	}
 	return (count_words);
 }
 
-static char	*find_words(const char *s, int start, int end)
+static char	**ft_tab(const char *s, char c, char **tab, int i)
 {
-	char	*word;
-	int		i;
+	int		j;
+	int		k;
 
-	word = malloc(sizeof(char) * (end - start + 1));
-	if (!word)
-		return (NULL);
-	i = 0;
-	while (start < end)
-	{
-		word[i] = s[start];
-		i++;
-		start++;
-	}
-	word[i] = '\0';
-	return (word);
-}
-
-static char	**rempli_tab(const char *s, char c, char **tab)
-{
-	int		place_word;
-	int		start;
-	int		i;
-
-	start = 0;
-	i = 0;
-	place_word = 1;
+	k = 0;
 	while (s[i])
 	{
-		if (s[i] != c)
-		{
-			start = i;
-			while (s[i] != c && s[i] != '\0')
-				i++;
-			tab[place_word] = find_words(s, start, i);
-			if (!tab[place_word])
-				return (libere_tab(tab, place_word - 1));
-			place_word++;
-		}
-		else
+		if (s[i] == c)
 			i++;
+		else
+		{
+			j = 0;
+			while (s[i + j] && s[i + j] != c)
+				j++;
+			tab[k] = ft_substr(s, i, j);
+			if (tab[k] == NULL)
+			{
+				free_tab(tab, k - 1);
+				return (NULL);
+			}
+			k++;
+			i += j;
+		}
 	}
-	tab[place_word] = NULL;
+	tab[k] = NULL;
 	return (tab);
 }
 
 char	**ft_split(char const *s, char c)
 {
 	char	**tab;
+	int		len;
 
 	if (!s)
 		return (NULL);
-	tab = malloc(sizeof (char *) * (count_words(s, c) + 2));
+	len = count_words(s, c);
+	tab = (char **)malloc(sizeof (char *) * (len + 1));
 	if (!tab)
 		return (NULL);
-	tab[0] = malloc(sizeof(char));
-	if (!tab[0])
-		return (NULL);
-	tab[0][0] = '\0';
-	tab = rempli_tab(s, c, tab);
+	tab = ft_tab(s, c, tab, 0);
 	if (!tab)
 		return (NULL);
 	return (tab);

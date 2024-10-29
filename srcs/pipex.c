@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 15:11:22 by memotyle          #+#    #+#             */
-/*   Updated: 2024/10/29 14:00:33 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/10/29 15:56:58 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	**path_cmd(char **env)
 		if (ft_strnstr(env[i], "PATH=", 5))
 		{
 			full_path = ft_strdup(env[i] + 5);
-			// ft_printf(BLUE "full_path : %s\n\n" RESET, full_path);
+			//ft_printf(BLUE "full_path : %s\n\n" RESET, full_path);
 			if (!full_path)
 				return (NULL);
 			break;
@@ -69,7 +69,10 @@ void	ex_cmd(char **path, char **env, char *av)
 		cmd_path = ft_strdup(*cmd);
 	}
 	if (execve(cmd_path, cmd, env) == -1)
-		return (free(cmd_path), free_and_exit(path, cmd, temp));
+	{
+		free(cmd_path);
+		free_and_exit(path, cmd, temp);
+	}
 	return (free(cmd_path), free_path(path, cmd, temp));
 }
 

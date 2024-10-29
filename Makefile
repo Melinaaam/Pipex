@@ -9,7 +9,7 @@ LIBFT_DIR = libft
 LIBFT = -L$(LIBFT_DIR) -lft
 
 SRCS = $(SRCDIR)/main.c \
-	$(SRCDIR)/pipex.c \
+	$(SRCDIR)/pipex.c
 
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 

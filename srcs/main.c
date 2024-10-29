@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:19:39 by memotyle          #+#    #+#             */
-/*   Updated: 2024/10/29 14:00:54 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/10/29 15:56:07 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,14 @@
 
 int	open_file(char *av, int pid)
 {
-	// ft_printf("open file\n");
 	int	fd;
 
 	if (pid == 0)//child process
 		fd = open(av, O_RDONLY);
 	if (pid == 1)//parent process
 		fd = open(av, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (fd == -1)
+		perror("No such file or directory\n");
 	return (fd);
 }
 void	parent_p(char **av, int *fd, char **env)
@@ -33,7 +34,6 @@ void	parent_p(char **av, int *fd, char **env)
 	path = path_cmd(env);
 	if (!path)
 		exit(127);
-
 	outfile = open_file(av[4], 1);
 	if (outfile == -1)
 		error(fd, av[4], path);
@@ -44,7 +44,6 @@ void	parent_p(char **av, int *fd, char **env)
 	close (outfile);
 	close(fd[1]);//ferme tube d'ecriture
 	ex_cmd(path, env, av[3]);
-	//execve(*path, &av[3], env);
 }
 
 void	child_p(char **av, int *fd, char **env)
@@ -65,7 +64,6 @@ void	child_p(char **av, int *fd, char **env)
 
 	close (infile); //close fichier infile apres l'avoir lu
 	close (fd[0]);//fermer ecriture tube
-	//execute cmd : execute(path, env, av[2]);
 	ex_cmd(path, env, av[2]);
 }
 
@@ -78,6 +76,7 @@ int	main(int ac, char **av, char **env)
 
 	if (ac == 5)
 	{
+
 		if (pipe(fd) == -1)
 			exit(EXIT_FAILURE);
 		pid1 = fork();
