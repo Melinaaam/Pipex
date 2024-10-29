@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:19:39 by memotyle          #+#    #+#             */
-/*   Updated: 2024/10/29 15:56:07 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/10/29 16:20:59 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ int	open_file(char *av, int pid)
 
 	if (pid == 0)//child process
 		fd = open(av, O_RDONLY);
-	if (pid == 1)//parent process
+	if (pid == 1)//second child
 		fd = open(av, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
 		perror("No such file or directory\n");
 	return (fd);
 }
-void	parent_p(char **av, int *fd, char **env)
+void	second_child(char **av, int *fd, char **env)
 {
 	int 	outfile;
 	char	**path;
@@ -46,7 +46,7 @@ void	parent_p(char **av, int *fd, char **env)
 	ex_cmd(path, env, av[3]);
 }
 
-void	child_p(char **av, int *fd, char **env)
+void	first_child(char **av, int *fd, char **env)
 {
 	int		infile;
 	char	**path;
@@ -83,12 +83,12 @@ int	main(int ac, char **av, char **env)
 		if (pid1 == -1)
 			exit(EXIT_FAILURE);
 		if (pid1 == 0)
-			child_p(av, fd, env);
+			first_child(av, fd, env);
 		pid2 = fork();
 		if (pid2 == -1)
 			exit(EXIT_FAILURE);
 		if (pid2 == 0)
-			parent_p(av, fd, env);
+			second_child(av, fd, env);
 		close (fd[0]);
 		close (fd[1]);
 		waitpid(pid1, NULL, 0);
