@@ -13,12 +13,13 @@ https://www.youtube.com/watch?v=tcYo6hipaSA&list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3k
 
 ## Processus
 
-
+Normally :
+```
 				STDIN------>cmd------>STDOUT
 				0			1
+```
 
-We want :
-
+With a pipe we want :
 
 ```
 ./pipex			Infile--->cmd1------->cmd2--->Outfile
