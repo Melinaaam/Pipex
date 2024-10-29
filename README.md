@@ -19,14 +19,15 @@ A program is just file on the computer that does nothing until it is started. A 
 
 A pipe is a mechanism for "connecting communication" directly between processes, so that the output of one process (stdout) directly feeds the input (stdin) of the next. The pipe is widely used on Unix, for example to associate several commands whose processing is chained.
 
-<br>
+
 To reproduce the operation of the pipe, we will need to know certain functions :
+```
 - Pipe
 - fork
 - dup2
 - excecve
 - waitpid
-<br>
+```
 
 ```
 ./pipex	Infile "cmd1" "cmd2" Outfile
