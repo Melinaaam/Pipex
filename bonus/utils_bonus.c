@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:21:30 by memotyle          #+#    #+#             */
-/*   Updated: 2024/10/29 19:05:53 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/10/30 12:32:27 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	open_file(char *av, int pid)
 		perror("No such file or directory\n");
 	return (fd);
 }
+
 //ft pour trouver le chemin de cmd passe en av
 char	**path_cmd(char **env)
 {
@@ -75,28 +76,41 @@ char	*check_cmd(char **path, char *cmd, char *temp)
 	return (ft_strdup(""));
 }
 
-void	ft_exit(int exit_e)
+void	ft_exit(char **path, char **cmd, char *temp)
 {
-	if (exit_e == 1)
-		ft_putstr_fd("eror\n", 2);
-	exit (0);
+	if (*cmd && cmd)
+		perror(*cmd);
+	ft_free(path, cmd, temp);
+	exit(EXIT_FAILURE);
 }
 
-void	ft_free(char **tab)
+void	ft_free(char **path, char **cmd, char *temp)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
-	if (tab[i])
-		free(tab[i++]);
-	free (tab);
+	if (path)
+	{
+		while (path[i])
+			free(path[i++]);
+		free(path);
+	}
+	i = 0;
+	if (cmd)
+	{
+		while (cmd[i])
+			free(cmd[i++]);
+		free(cmd);
+	}
+	if (temp)
+		free(temp);
 }
 
 void	ft_error(int *fd, char *av, char **path)
 {
 	close(fd[0]);
 	close(fd[1]);
-	free_path(path, NULL, NULL);
+	ft_free(path, NULL, NULL);
 	perror(av);
 	exit(EXIT_FAILURE);
 }

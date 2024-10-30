@@ -8,15 +8,16 @@ OBJDIR = obj
 LIBFT_DIR = libft
 LIBFT = -L$(LIBFT_DIR) -lft
 
-SRCS = $(SRCDIR)/utils.c \
-	$(SRCDIR)/pipex.c
+SRCS = $(SRCDIR)/utils.c $(SRCDIR)/pipex.c
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 BONUSDIR = bonus
 BONUSOBJDIR = obj_bonus
-BONUS = $(BONUSDIR)/pipex_bonus.c \
-	$(BONUSDIR)/utils_bonus.c
-OBJS_BONUS = $(SRCS_BONUS:$(BONUSDIR)/%.c=$(BONUSOBJDIR)/%.o)
+BONUS_SRCS = $(BONUSDIR)/pipex_bonus.c $(BONUSDIR)/utils_bonus.c
+OBJS_BONUS = $(BONUS_SRCS:$(BONUSDIR)/%.c=$(BONUSOBJDIR)/%.o)
+
+$(info BONUS_SRCS = $(BONUS_SRCS))
+$(info OBJS_BONUS = $(OBJS_BONUS))
 
 PINK = \033[38;5;213m
 BLUE = \033[38;5;75m
@@ -27,28 +28,25 @@ INCLUDES = -Iincludes -I$(LIBFT_DIR)/includes
 
 all: $(NAME)
 
-$(NAME): $(LIBFT_DIR)/libft.a $(OBJDIR) $(OBJS)
+$(NAME): $(OBJS) $(LIBFT_DIR)/libft.a
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 	@echo "$(BOLD)$(PINK)🎉 Compile with success !!! 🎉$(RESET)"
+
 bonus: $(NAME_BONUS)
 
-# Build the bonus executable
-$(NAME_BONUS): $(LIBFT_DIR)/libft.a $(BONUSOBJDIR) $(OBJS_BONUS)
+$(NAME_BONUS): $(OBJS_BONUS) $(LIBFT_DIR)/libft.a
 	$(CC) $(CFLAGS) $(OBJS_BONUS) $(LIBFT) -o $(NAME_BONUS)
 	@echo "$(BOLD)$(BLUE)🎉 Bonus compiled with success !!! 🎉$(RESET)"
 
 $(LIBFT_DIR)/libft.a:
 	make -C $(LIBFT_DIR)
 
-$(OBJDIR):
-	mkdir -p $(OBJDIR)
-$(BONUSOBJDIR):
-	mkdir -p $(BONUSOBJDIR)
-
-$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	@mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(BONUSOBJDIR)/%.o: $(BONUSDIR)/%.c | $(BONUSOBJDIR)
+$(BONUSOBJDIR)/%.o: $(BONUSDIR)/%.c
+	@mkdir -p $(BONUSOBJDIR)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
