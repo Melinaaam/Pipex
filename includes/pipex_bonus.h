@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:21:03 by memotyle          #+#    #+#             */
-/*   Updated: 2024/10/30 12:32:27 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/11/06 19:48:09 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@ int		open_file(char *av, int id);
 
 //pipex.c
 void	ex_cmd(char **path, char **env, char *av);
-void	first_child(char **av, int *fd, char **env);
-void	second_child(char **av, int *fd, char **env);
+void	ft_pipes(int cmd_count, int **pipes);
+void	forked(char **av, char **env, int **pipes, int cmd_count, int ac);
+void	execute_command(char **av, char **env, int **pipes, int i, int cmd_count, int ac);
+void	close_pipes(int cmd_count, int **pipes);
+void	wait_process(int cmd_count);
+
+
 #endif

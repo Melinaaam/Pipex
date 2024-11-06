@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:19:39 by memotyle          #+#    #+#             */
-/*   Updated: 2024/10/29 18:37:24 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/11/06 09:53:44 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 //ft pour executer cmd : utiliation de execve
 	//remplace le processus actuel par un nouveau proramme
-	//utilise par le p enfant apres l'appel a fork pourexeuter une commane
+	//utilise par le p enfant apres l'appel a fork pourexeuter une commande
 void	ex_cmd(char **path, char **env, char *av)
 {
 	char	*cmd_path;
