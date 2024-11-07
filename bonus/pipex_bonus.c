@@ -6,21 +6,38 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:21:23 by memotyle          #+#    #+#             */
-/*   Updated: 2024/11/07 17:27:15 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/11/07 20:18:41 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-//ft pour executer cmd : utiliation de execve
-	//remplace le processus actuel par un nouveau proramme
-	//utilise par le p enfant apres l'appel a fork pourexeuter une commane
-void	ex_cmd(char **env, char *av, char **path)
+int	open_file(char *av, int pross)
+{
+	int	fd;
+
+	if (pross == 0)
+		fd = open(av, O_RDONLY);
+	if (pross == 1)
+		fd = open(av, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (pross == 2)
+		fd = open(av, O_WRONLY | O_CREAT | O_APPEND, 0777);
+	if (fd == -1)
+	{
+		perror(av);
+		exit(EXIT_FAILURE);
+	}
+	return (fd);
+}
+
+void	ex_cmd(char **env, char *av)
 {
 	char	*cmd_path;
 	char	*temp;
 	char	**cmd;
+	char	**path;
 
+	path = path_cmd(env);
 	cmd = ft_split(av, ' ');
 	temp = ft_strjoin ("/", cmd[0]);
 	if (!temp || !cmd || !*cmd)
@@ -39,8 +56,7 @@ void	ex_cmd(char **env, char *av, char **path)
 		ft_exit(path, cmd, temp);
 	}
 	free(cmd_path);
-	ft_free(cmd, temp);
-	ft_free_paths(path);
+	ft_free(cmd, temp, path);
 }
 
 void	pipe_heredoc(char **av, int *pipe_fd)
@@ -51,7 +67,8 @@ void	pipe_heredoc(char **av, int *pipe_fd)
 	while (1)
 	{
 		read_p = get_next_line(0);
-		if (ft_strncmp(read_p, av[2], ft_strlen(av[2])) == 0 && read_p[ft_strlen(av[2])] == '\n')
+		if (ft_strncmp(read_p, av[2], ft_strlen(av[2])) == 0
+			&& read_p[ft_strlen(av[2])] == '\n')
 		{
 			free(read_p);
 			exit (EXIT_FAILURE);
@@ -60,6 +77,7 @@ void	pipe_heredoc(char **av, int *pipe_fd)
 		free(read_p);
 	}
 }
+
 void	ft_here_doc(char **av)
 {
 	pid_t	pid;
@@ -79,12 +97,14 @@ void	ft_here_doc(char **av)
 		wait (NULL);
 	}
 }
-//ft multi pipe
-void	ft_pipes(char *cmd, char **env, char **path)
+
+void	ft_pipes(char *cmd, char **env)
 {
 	pid_t	pid;
 	int		fds[2];
+	char	**path;
 
+	path = path_cmd(env);
 	if (pipe(fds) == -1)
 		exit(EXIT_FAILURE);
 	pid = fork();
@@ -95,7 +115,7 @@ void	ft_pipes(char *cmd, char **env, char **path)
 		close(fds[0]);
 		dup2(fds[1], STDOUT_FILENO);
 		close(fds[1]);
-		ex_cmd(env, cmd, path);
+		ex_cmd(env, cmd);
 	}
 	else
 	{
@@ -104,44 +124,4 @@ void	ft_pipes(char *cmd, char **env, char **path)
 		close(fds[0]);
 		waitpid(pid, NULL, 0);
 	}
-}
-
-
-int	main(int ac, char **av, char **env)
-{
-	int	fd_input;
-	int	fd_output;
-	int	i;
-	char	**path;
-
-	if (ac < 5)
-	{
-		ft_putstr_fd("Error: not enough arguments\n", STDERR_FILENO);
-		exit(EXIT_FAILURE);
-	}
-	if (ft_strcmp(av[1], "here_doc") == 0)
-	{
-		if (ac < 6)
-			exit(EXIT_FAILURE);
-		i = 3;
-		fd_output = open_file(av[ac - 1], 2);
-		ft_here_doc(av);
-	}
-	else
-	{
-		i = 2;
-		fd_input = open_file(av[1], 0);
-		fd_output = open_file(av[ac - 1], 1);
-		dup2(fd_input, STDIN_FILENO);
-	}
-	path = path_cmd(env);
-	while (i < ac - 2)
-		ft_pipes(av[i++], env, path);
-
-	dup2(fd_output, STDOUT_FILENO);
-	close(fd_output);
-	if (fd_input != -1)
-		close (fd_input);
-	ex_cmd(env, av[ac - 2], path);
-	return (0);
 }

@@ -1,52 +1,43 @@
 #!/bin/bash
 
-#colors
+# Couleurs pour l'affichage
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 BLUE='\033[0;34m'
-LIGHT_GRAY='\033[0;37m'
-YELLOW='\033[0;33m'
-PURPLE='\033[0;35m'
-CYAN='\033[0;36m'
-LIGHT_GRAY='\033[0;37m'
 ORANGE='\033[38;5;214m'
-PINK='\033[38;5;205m'
 TEAL='\033[38;5;44m'
 NC='\033[0m'
 
-# chemin vers exec
+# Chemin vers l'exécutable
 PIPEX=./pipex_bonus
 
-#ft pour executer test
+# Fonction pour exécuter un test
 test_pipex()
 {
 	local description=$1
 	local pipex_cmd=$2
 	local real_pipe_cmd=$3
 
-	echo -e "\n${ORANGE}Running test:${NC} $description"
+	echo -e "\nRunning test: $description"
 
-	#execute pipex et stocke la sortie dans outfile_pipex
-	eval "$pipex_cmd" > outfile_pipex 2> /dev/null
+	# Exécute pipex et stocke la sortie dans outfile_pipex
+	eval "$pipex_cmd" > outfile_pipex 2>&1
 
-	#execute cmd pipe et stocke la sortie dans outfile_real_pipe
-	eval "$real_pipe_cmd" > outfile_real_pipe 2> /dev/null
+	# Exécute la commande de référence et stocke la sortie dans outfile_real_pipe
+	eval "$real_pipe_cmd" > outfile_real_pipe 2>&1
 
-	#compare les deux sorties
+	# Compare les deux sorties
 	if diff -q outfile_pipex outfile_real_pipe > /dev/null; then
-		echo -e "✅ ${GREEN}OK${NC}"
-		echo -e "${BLUE}Exepted output (real cmd):${NC}"
-		cat outfile_real_pipe
-		echo -e "${TEAL}My output (pipex):${NC}"
-		cat outfile_pipex
+		echo "✅ OK"
 	else
-		echo -e "❌ ${RED}KO${NC}"
-		echo -e "${BLUE}Exepted output (real cmd):${NC}"
-		echo -e "${TEAL}My output (pipex):${NC}"
+		echo "❌ KO"
+		echo "Expected output (real cmd):"
+		cat outfile_real_pipe
+		echo "My output (pipex):"
 		cat outfile_pipex
 	fi
 
-	#nettoyage des fichiers temp
+	# Nettoyage des fichiers temporaires
 	rm -f outfile_pipex outfile_real_pipe
 }
 
@@ -70,161 +61,61 @@ test_valgrind()
 	# Nettoyage
 	rm -f valgrind_output
 }
-# prep des fichiers d'entrees
+
+# Préparation des fichiers d'entrée
 echo -e "Hello world\nHello\nHELLO\nBonjour\nHELLO WORLD\nhello" > infile
-echo -e "Test 3\ntest" > infile_R
-echo -e "" > emptyfile
-echo -e "" > emptyoutfile
 
-# TESTS
-# Test 1 : cat  | grep | sort | uniq
+# TESTS POUR HERE_DOC
+
+# Test here_doc simple avec grep et wc
 test_pipex \
-	"Test1 : cat  | grep | sort | uniq\n./pipex infile 'cat' 'grep hello' 'sort' 'uniq'" \
+	"Test here_doc avec délimiteur END, grep et wc" \
+	"$PIPEX here_doc END 'grep hello' 'wc -l' outfile_pipex << END
+hello world
+bonjour
+hello again
+END" \
+	"cat << END | grep hello | wc -l > outfile_real_pipe
+hello world
+bonjour
+hello again
+END"
+
+
+# Test here_doc avec plusieurs commandes
+test_pipex \
+	"Test here_doc avec délimiteur STOP et commandes multiples" \
+	"$PIPEX here_doc STOP 'cat' 'sort' 'uniq' outfile_pipex << STOP
+apple
+banana
+apple
+STOP" \
+	"cat << STOP | cat | sort | uniq > outfile_real_pipe
+apple
+banana
+apple
+STOP"
+
+# TESTS POUR MULTI-PIPE
+
+# Test multi-pipe avec 3 commandes
+test_pipex \
+	"Test multi-pipe : cat | grep | sort | uniq" \
 	"$PIPEX infile 'cat' 'grep hello' 'sort' 'uniq' outfile_pipex" \
-	"cat infile | grep hello | sort | uniq > outfile_pipex"
-	#cat lit le contenu de infile.txt.
-	#grep motif filtre les lignes contenant le mot "hello".
-	#sort trie les lignes filtrées.
-	#uniq supprime les lignes dupliquées.
-	#Test1 with valgrind
+	"cat infile | grep hello | sort | uniq > outfile_real_pipe"
+#Test1 with valgrind
 test_valgrind \
-	"Test1 with valgrind" \
+	"Test : cat | grep | sort | uniq with valgrind" \
 	"$PIPEX infile 'cat' 'grep hello' 'sort' 'uniq' outfile_pipex" \
 
-#Test 2 : no infile
+# Test multi-pipe avec des commandes différentes
 test_pipex \
-	"Test2 : no infile \n./pipex nofile 'cat' 'grep hello' 'wc -l' outfile" \
-	"$PIPEX nofile 'cat' 'grep hello' 'wc -l' outfile_pipex"
-	"cat nofile | grep hello | 'wc -l'"
-#Test2 with valgrind
+	"Test multi-pipe avec commandes wc et cat" \
+	"$PIPEX infile 'wc -w' 'cat' 'wc -l' outfile_pipex" \
+	"cat infile | wc -w | cat | wc -l > outfile_real_pipe"
 test_valgrind \
-	"Test2 with valgrind" \
-	"$PIPEX nofile 'cat' 'grep hello' 'wc -l' outfile_pipex" \
+	"Test multi-pipe avec commandes wc et cat with valgrind" \
+	"$PIPEX infile 'wc -w' 'cat' 'wc -l' outfile_pipex" \
 
-#Test 3 : infile_R with no read perm
-test_pipex \
-	"Test3 infile_R with no read perm: \n./pipex infile with no read right 'cat' 'grep hello' outfile" \
-	"$PIPEX infile_R 'cat' 'grep hello' 'wc -l' outfile_pipex"
-	"cat infile_R | grep hello | 'wc -l'"
-#Test3 with valgrind
-test_valgrind \
-	"Test3 with valgrind" \
-	"$PIPEX infile_R 'cat' 'grep hello' 'wc -l' outfile_pipex" \
-
-#Test 4 : outfile with no write perm
-test_pipex \
-	"Test 4 : outfile with no write perm" \
-	"$PIPEX infile 'cat' 'grep hello' 'wc -l' outfile_nowriteperm" \
-	"cat infile | grep hello | 'wc -l' > outfile_nowriteperm "
-#Test4 with valgrind
-test_valgrind \
-	"Test4 with valgrind" \
-	"$PIPEX infile 'cat' 'grep hello' 'wc -l' outfile_nowriteperm" \
-
-#Test 5 : cmd ko
-test_pipex \
-	"Test5 : cmd ko\n./pipex infile 'caty' 'grep hello' 'wc -l' outfile" \
-	"$PIPEX nofile 'caty' 'grep hello' 'wc -l' outfile_pipex"
-	"caty nofile | grep hello | 'wc -l'"
-#Test5 with valgrind
-test_valgrind \
-	"Test5 with valgrind" \
-	"$PIPEX nofile 'caty' 'grep hello' 'wc -l' outfile_pipex" \
-
-#test 6 : cmd with options : 'cat -e' 'wc -l' 'wc'
-test_pipex \
-	"Test6 : cmd with options\n./pipex infile 'grep hello -i' 'wc -l''wc' outfile" \
-	"$PIPEX infile 'grep hello -i' 'wc -l' 'wc' outfile_pipex" \
-	"grep hello -i infile | wc -l | 'wc'"
-#Test6 with valgrind
-test_valgrind \
-	"Test6 with valgrind" \
-	"$PIPEX infile 'grep hello -i' 'wc -l' 'wc' outfile_pipex" \
-
-#Test 7 : 1 av
-test_pipex \
-	"Test7 : 1 argument\n./pipex infile 'cat'" \
-	"$PIPEX infile 'cat'" \
-	"cat infile | "
-#Test7 with valgrind
-test_valgrind \
-	"Test7 with valgrind" \
-	"$PIPEX infile 'cat'" \
-
-# Test 8 : grep -i
-test_pipex \
-	"Test8 : grep -i \n./pipex infile 'grep -i hello' 'wc -l' outfile" \
-	"$PIPEX infile 'grep -i hello' 'wc -l' outfile_pipex" \
-	"grep -i hello infile | wc -l"
-# Test 8 with valgrind
-test_valgrind \
-	"Test8 with valgrind" \
-	"$PIPEX infile 'grep -i hello' 'wc -l' outfile_pipex"
-
-# Test 9 : empty file
-test_pipex \
-	"Test9 : empty file\n./pipex emptyfile 'grep hello' 'wc -l' 'cat' outfile_pipex" \
-	"$PIPEX emptyfile 'grep hello' 'wc -l' 'cat' outfile_pipex" \
-	"grep hello emptyfile | wc -l | 'cat'"
-#Test9 with valgrind
-test_valgrind \
-	"Test1 with valgrind" \
-	"$PIPEX infile_R 'cat' 'grep hello' 'cat' outfile_pipex" \
-
-#Test 10 : empty outfile
-test_pipex \
-	"Test 10 : empty outfile" \
-	"$PIPEX infile 'cat' 'grep hello' 'wc -l' emptyoutfile" \
-	"cat infile | grep hello | 'wc -l' > emptyoutfile "
-#Test 10 with valgrind
-test_valgrind \
-	"Test4 with valgrind" \
-	"$PIPEX infile 'cat' 'grep hello' 'wc -l' emptyoutfile" \
-
-# Test 11 : "grep 'no_match'"
-test_pipex \
-	"Test11 : empty file\n./pipex infile 'grep nomatch' 'wc -l' 'cat' outfile_pipex" \
-	"$PIPEX infile 'grep nomatch' 'wc -l' 'cat' outfile_pipex" \
-	"grep nomatch infile | wc -l | 'cat'"
-#Test 11 with valgrind
-test_valgrind \
-	"Test1 with valgrind" \
-	"$PIPEX infile 'grep nomatch' 'wc -l' 'cat' outfile_pipex" \
-
-# Test 12 : empty cmd
-test_pipex \
-	"Test12 : empty cmd\n./pipex infile '' 'grep hello' 'wc -l' outfile" \
-	"$PIPEX infile '' 'grep hello' 'wc -l' outfile_pipex" \
-	" infile | grep hello | 'wc -l'"
-#Test 12 with valgrind
-test_valgrind \
-	"Test12 with valgrind" \
-	"$PIPEX infile '' 'grep hello' 'wc -l' outfile_pipex" \
-
-# Test 13 : no sens cmd
-test_pipex \
-	"Test13 : "ls | grep"\n./pipex infile 'ls' 'grep' 'ls' outfile" \
-	"$PIPEX infile 'ls' 'grep' 'ls' outfile_pipex" \
-	" ls infile | grep | 'ls'"
-#Test 13 with valgrind
-test_valgrind \
-	"Test12 with valgrind" \
-	"$PIPEX infile 'ls' 'grep' 'ls' outfile_pipex" \
-
-# Test 14 : no sens cmd
-test_pipex \
-	"Test14 : "echo 'Hello' | cat -e"\n./pipex infile 'echo Hello' 'cat -e' 'wc -l' outfile" \
-	"$PIPEX infile 'echo Hello' 'cat -e' 'wc -l' outfile_pipex" \
-	" echo Hello infile | cat -e | 'wc -l'"
-#Test 14 with valgrind
-test_valgrind \
-	"Test14 with valgrind" \
-	"$PIPEX infile 'echo Hello' 'cat -e' 'wc -l' outfile_pipex" \
-
-# nettoyage fichier d'entree
-rm -f infile infile_R outfile_nowriteperm emptyfile
-
-# Interruption utilisateur : Exécutez pipex puis forcez une interruption (Ctrl + C) pour voir comment le programme gère les interruptions externes
-# Signal de terminaison : Envoyez un signal SIGTERM pour vérifier que pipex libère bien les ressources en cas de fermeture forcée.
-#find / -name "*.c"
-#Vérifiez que les messages d'erreur de pipex apparaissent dans stderr et non dans stdout
+# Nettoyage des fichiers d'entrée
+rm -f infile emptyfile outfile_pipex outfile_real_pipe

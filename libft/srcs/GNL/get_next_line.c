@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:09:35 by memotyle          #+#    #+#             */
-/*   Updated: 2024/10/21 13:20:42 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/11/07 20:04:20 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static char	*get_line(char **buffer)
 static int	read_file(int fd, char **buffer)
 {
 	char	*read_buffer;
+	char	*tmp;
 	int		bytes_read;
 
 	read_buffer = malloc(BUFFER_SIZE + 1);
@@ -61,10 +62,9 @@ static int	read_file(int fd, char **buffer)
 	while (bytes_read > 0)
 	{
 		read_buffer[bytes_read] = '\0';
-		if (!*buffer)
-			*buffer = ft_strdup(read_buffer);
-		else
-			*buffer = ft_strjoin(*buffer, read_buffer);
+		tmp = *buffer;
+		*buffer = ft_strjoin_gnl(tmp, read_buffer);
+		free(tmp);
 		if (!*buffer)
 			return (free(read_buffer), -1);
 		if (ft_strchr(read_buffer, '\n'))

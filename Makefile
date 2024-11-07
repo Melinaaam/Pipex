@@ -1,7 +1,7 @@
 NAME = pipex
 NAME_BONUS = pipex_bonus
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3
+CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address
 
 SRCDIR = srcs
 OBJDIR = obj
@@ -13,7 +13,7 @@ OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 BONUSDIR = bonus
 BONUSOBJDIR = obj_bonus
-BONUS_SRCS = $(BONUSDIR)/pipex_bonus.c $(BONUSDIR)/utils_bonus.c
+BONUS_SRCS = $(BONUSDIR)/pipex_bonus.c $(BONUSDIR)/utils_bonus.c $(BONUSDIR)/main_bonus.c
 OBJS_BONUS = $(BONUS_SRCS:$(BONUSDIR)/%.c=$(BONUSOBJDIR)/%.o)
 
 $(info BONUS_SRCS = $(BONUS_SRCS))

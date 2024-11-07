@@ -3,34 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melinamotylewski <melinamotylewski@stud    +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:21:30 by memotyle          #+#    #+#             */
-/*   Updated: 2024/11/07 13:07:44 by melinamotyl      ###   ########.fr       */
+/*   Updated: 2024/11/07 18:20:16 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-int	open_file(char *av, int pross)
-{
-	int	fd;
-
-	if (pross == 0)
-		fd = open(av, O_RDONLY);
-	if (pross == 1)
-		fd = open(av, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	if (pross == 2)
-		fd = open(av, O_WRONLY | O_CREAT | O_APPEND, 0777);
-	if (fd == -1)
-	{
-		perror(av);
-		exit(EXIT_FAILURE);
-	}
-	return (fd);
-}
-
-//ft pour trouver le chemin de cmd passe en av
 char	**path_cmd(char **env)
 {
 	int		i;
@@ -85,16 +66,22 @@ void	ft_exit(char **path, char **cmd, char *temp)
 {
 	if (*cmd && cmd)
 		perror(*cmd);
-	ft_free_paths(path);
-	ft_free(cmd, temp);
+	ft_free(cmd, temp, path);
 	exit(EXIT_FAILURE);
 }
 
-void	ft_free(char **cmd, char *temp)
+void	ft_error(int f_error)
+{
+	if (f_error == 1)
+		ft_putstr_fd("Error: not enough arguments\n", STDERR_FILENO);
+	exit(EXIT_FAILURE);
+}
+
+void	ft_free(char **cmd, char *temp, char **paths)
 {
 	int	i;
 
-	if (cmd)
+	if (cmd || paths)
 	{
 		i = 0;
 		while (cmd[i])
@@ -103,22 +90,6 @@ void	ft_free(char **cmd, char *temp)
 			cmd[i] = NULL;
 			i++;
 		}
-		free(cmd);
-	}
-	if (temp)
-	{
-		free(temp);
-		temp = NULL;
-	}
-}
-
-
-void	ft_free_paths(char **paths)
-{
-	int	i;
-
-	if (paths)
-	{
 		i = 0;
 		while (paths[i])
 		{
@@ -126,7 +97,11 @@ void	ft_free_paths(char **paths)
 			paths[i] = NULL;
 			i++;
 		}
-		free(paths);
-		paths = NULL;
+		free(cmd);
+	}
+	if (temp)
+	{
+		free(temp);
+		temp = NULL;
 	}
 }

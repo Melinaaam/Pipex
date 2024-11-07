@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:20:26 by memotyle          #+#    #+#             */
-/*   Updated: 2024/10/29 18:24:34 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/11/07 18:25:37 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,8 @@ char	*check_cmd(char **path, char *cmd, char *temp);
 void	ft_exit(char **path, char **cmd, char *tmp);
 void	ft_free(char **path, char **cmd, char *temp);
 void	ft_error(int *fd, char *av, char **path);
-int		open_file(char *av, int id);
-
 //pipex.c
+int		open_file(char *av, int id);
 void	ex_cmd(char **path, char **env, char *av);
 void	first_child(char **av, int *fd, char **env);
 void	second_child(char **av, int *fd, char **env);

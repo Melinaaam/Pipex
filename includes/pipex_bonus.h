@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melinamotylewski <melinamotylewski@stud    +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:21:03 by memotyle          #+#    #+#             */
-/*   Updated: 2024/11/07 13:57:05 by melinamotyl      ###   ########.fr       */
+/*   Updated: 2024/11/07 18:25:47 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,17 @@
 # define MAGENTA "\e[1;95m"
 # define CYAN "\e[1;96m"
 
-//utils.c
-int	open_file(char *av, int pid);
+//utils_bonus.c
 char	**path_cmd(char **env);
 char	*check_cmd(char **path, char *cmd, char *temp);
 void	ft_exit(char **path, char **cmd, char *temp);
-void	ft_free(char **cmd, char *temp);
-void	ft_free_paths(char **paths);
-
-
-//pipex.c
-void	ex_cmd(char **env, char *av, char **path);
-void	ft_pipes(char *cmd, char **env, char **path);
-void	forked(char **av, char **env, int **pipes, int cmd_count);
-void	execute_command(char **av, char **env, int **pipes, int i, int cmd_count, char **path);
-void	close_pipes(int **pipes, int pipe_count);
-void	wait_process(int cmd_count);
-
-
+void	ft_error(int f_error);
+void	ft_free(char **cmd, char *temp, char **paths);
+//pipex_bonus.c
+int		open_file(char *av, int pross);
+void	ex_cmd(char **env, char *av);
+void	pipe_heredoc(char **av, int *pipe_fd);
+void	ft_here_doc(char **av);
+void	ft_pipes(char *cmd, char **env);
 
 #endif

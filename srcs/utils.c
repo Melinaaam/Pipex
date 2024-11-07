@@ -6,24 +6,11 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 15:11:22 by memotyle          #+#    #+#             */
-/*   Updated: 2024/10/29 19:03:54 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/11/07 19:32:41 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-int	open_file(char *av, int pid)
-{
-	int	fd;
-
-	if (pid == 0)
-		fd = open(av, O_RDONLY);
-	if (pid == 1)
-		fd = open(av, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	if (fd == -1)
-		perror("No such file or directory\n");
-	return (fd);
-}
 
 //ft pour trouver le chemin de cmd passe en av
 char	**path_cmd(char **env)

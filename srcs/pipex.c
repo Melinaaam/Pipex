@@ -6,15 +6,23 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:19:39 by memotyle          #+#    #+#             */
-/*   Updated: 2024/11/06 09:53:44 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/11/07 20:07:10 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-//ft pour executer cmd : utiliation de execve
-	//remplace le processus actuel par un nouveau proramme
-	//utilise par le p enfant apres l'appel a fork pourexeuter une commande
+int	open_file(char *av, int pid)
+{
+	int	fd;
+
+	if (pid == 0)
+		fd = open(av, O_RDONLY);
+	if (pid == 1)
+		fd = open(av, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	return (fd);
+}
+
 void	ex_cmd(char **path, char **env, char *av)
 {
 	char	*cmd_path;

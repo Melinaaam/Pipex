@@ -1,5 +1,0 @@
-==93429== Memcheck, a memory error detector
-==93429== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==93429== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==93429== Command: ./pipex_bonus infile_R 'cat' 'grep hello' 'wc -l' outfile_pipex
-==93429== 
