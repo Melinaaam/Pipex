@@ -71,21 +71,25 @@ test_valgrind()
 	rm -f valgrind_output
 }
 # prep des fichiers d'entrees
-echo -e "Hello world\nhello\nHELLO\nBonjour\nHELLO WORLD\n" > infile
+echo -e "Hello world\nHello\nHELLO\nBonjour\nHELLO WORLD\nhello" > infile
 echo -e "Test 3\ntest" > infile_R
 echo -e "" > emptyfile
 echo -e "" > emptyoutfile
 
 # TESTS
-# Test 1 : cat | grep | wc -l
+# Test 1 : cat  | grep | sort | uniq
 test_pipex \
-	"Test1 : cat et grep\n./pipex infile 'cat' 'grep hello' 'wc -l' outfile" \
-	"$PIPEX infile 'cat' 'grep hello' 'wc -l' outfile_pipex" \
-	"cat infile | grep hello | wc -l"
-#Test1 with valgrind
+	"Test1 : cat  | grep | sort | uniq\n./pipex infile 'cat' 'grep hello' 'sort' 'uniq'" \
+	"$PIPEX infile 'cat' 'grep hello' 'sort' 'uniq' outfile_pipex" \
+	"cat infile | grep hello | sort | uniq > outfile_pipex"
+	#cat lit le contenu de infile.txt.
+	#grep motif filtre les lignes contenant le mot "hello".
+	#sort trie les lignes filtrées.
+	#uniq supprime les lignes dupliquées.
+	#Test1 with valgrind
 test_valgrind \
 	"Test1 with valgrind" \
-	"$PIPEX infile 'cat' 'grep hello' 'wc -l' outfile_pipex" \
+	"$PIPEX infile 'cat' 'grep hello' 'sort' 'uniq' outfile_pipex" \
 
 #Test 2 : no infile
 test_pipex \

@@ -1,6 +1,6 @@
 Exemple 1 : Commandes de base avec plusieurs pipes
 Commande Shell :
-cat infile.txt | grep "motif" | sort | uniq > outfile.txt
+cat infile | grep "motif" | sort | uniq > outfile
 Utilisation avec votre programme Pipex :
 ./pipex_bonus infile.txt "cat" "grep motif" "sort" "uniq" outfile.txt
 Explication :

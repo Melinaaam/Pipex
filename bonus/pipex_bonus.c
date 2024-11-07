@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melinamotylewski <melinamotylewski@stud    +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:21:23 by memotyle          #+#    #+#             */
-/*   Updated: 2024/11/07 13:56:46 by melinamotyl      ###   ########.fr       */
+/*   Updated: 2024/11/07 17:27:15 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,43 @@ void	ex_cmd(char **env, char *av, char **path)
 	ft_free(cmd, temp);
 	ft_free_paths(path);
 }
+
+void	pipe_heredoc(char **av, int *pipe_fd)
+{
+	char	*read_p;
+
+	close(pipe_fd[0]);
+	while (1)
+	{
+		read_p = get_next_line(0);
+		if (ft_strncmp(read_p, av[2], ft_strlen(av[2])) == 0 && read_p[ft_strlen(av[2])] == '\n')
+		{
+			free(read_p);
+			exit (EXIT_FAILURE);
+		}
+		ft_putstr_fd(read_p, pipe_fd[1]);
+		free(read_p);
+	}
+}
+void	ft_here_doc(char **av)
+{
+	pid_t	pid;
+	int		fds[2];
+
+	if (pipe(fds) == -1)
+		exit(EXIT_FAILURE);
+	pid = fork();
+	if (pid == -1)
+		exit(EXIT_FAILURE);
+	if (!pid)
+		pipe_heredoc(av, fds);
+	else
+	{
+		close (fds[1]);
+		dup2(fds[0], 0);
+		wait (NULL);
+	}
+}
 //ft multi pipe
 void	ft_pipes(char *cmd, char **env, char **path)
 {
@@ -59,7 +96,6 @@ void	ft_pipes(char *cmd, char **env, char **path)
 		dup2(fds[1], STDOUT_FILENO);
 		close(fds[1]);
 		ex_cmd(env, cmd, path);
-		// exit(EXIT_FAILURE);
 	}
 	else
 	{
@@ -73,8 +109,8 @@ void	ft_pipes(char *cmd, char **env, char **path)
 
 int	main(int ac, char **av, char **env)
 {
-	int	firsts_fd;
-	int	last_fd;
+	int	fd_input;
+	int	fd_output;
 	int	i;
 	char	**path;
 
@@ -83,19 +119,29 @@ int	main(int ac, char **av, char **env)
 		ft_putstr_fd("Error: not enough arguments\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
-	firsts_fd = open_file(av[1], 0);
-	last_fd = open_file(av[ac - 1], 1);
-	dup2(firsts_fd, STDIN_FILENO);
-	close(firsts_fd);
-	path = path_cmd(env);
-	i = 2;
-	while (i < ac - 2)
+	if (ft_strcmp(av[1], "here_doc") == 0)
 	{
-		ft_pipes(av[i], env, path);
-		i++;
+		if (ac < 6)
+			exit(EXIT_FAILURE);
+		i = 3;
+		fd_output = open_file(av[ac - 1], 2);
+		ft_here_doc(av);
 	}
-	dup2(last_fd, STDOUT_FILENO);
-	close(last_fd);
+	else
+	{
+		i = 2;
+		fd_input = open_file(av[1], 0);
+		fd_output = open_file(av[ac - 1], 1);
+		dup2(fd_input, STDIN_FILENO);
+	}
+	path = path_cmd(env);
+	while (i < ac - 2)
+		ft_pipes(av[i++], env, path);
+
+	dup2(fd_output, STDOUT_FILENO);
+	close(fd_output);
+	if (fd_input != -1)
+		close (fd_input);
 	ex_cmd(env, av[ac - 2], path);
 	return (0);
 }
