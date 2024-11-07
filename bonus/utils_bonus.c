@@ -3,25 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melinamotylewski <melinamotylewski@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:21:30 by memotyle          #+#    #+#             */
-/*   Updated: 2024/10/30 12:32:27 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/11/07 13:07:44 by melinamotyl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-int	open_file(char *av, int pid)
+int	open_file(char *av, int pross)
 {
 	int	fd;
 
-	if (pid == 0)
+	if (pross == 0)
 		fd = open(av, O_RDONLY);
-	if (pid == 1)
+	if (pross == 1)
 		fd = open(av, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (pross == 2)
+		fd = open(av, O_WRONLY | O_CREAT | O_APPEND, 0777);
 	if (fd == -1)
-		perror("No such file or directory\n");
+	{
+		perror(av);
+		exit(EXIT_FAILURE);
+	}
 	return (fd);
 }
 
@@ -45,7 +50,7 @@ char	**path_cmd(char **env)
 		}
 		i++;
 	}
-	if (ft_strlen(full_path) == 0 || full_path == NULL)
+	if (!full_path || ft_strlen(full_path) == 0)
 		split_path = ft_split(".", ':');
 	else
 	{
@@ -61,7 +66,7 @@ char	*check_cmd(char **path, char *cmd, char *temp)
 	int		i;
 
 	i = 0;
-	if (!temp | !cmd | !*path | !path)
+	if (!temp || !cmd || !path || !*path)
 		return (NULL);
 	while (path[i] && path)
 	{
@@ -80,37 +85,48 @@ void	ft_exit(char **path, char **cmd, char *temp)
 {
 	if (*cmd && cmd)
 		perror(*cmd);
-	ft_free(path, cmd, temp);
+	ft_free_paths(path);
+	ft_free(cmd, temp);
 	exit(EXIT_FAILURE);
 }
 
-void	ft_free(char **path, char **cmd, char *temp)
+void	ft_free(char **cmd, char *temp)
 {
 	int	i;
 
-	i = 0;
-	if (path)
-	{
-		while (path[i])
-			free(path[i++]);
-		free(path);
-	}
-	i = 0;
 	if (cmd)
 	{
+		i = 0;
 		while (cmd[i])
-			free(cmd[i++]);
+		{
+			free(cmd[i]);
+			cmd[i] = NULL;
+			i++;
+		}
 		free(cmd);
 	}
 	if (temp)
+	{
 		free(temp);
+		temp = NULL;
+	}
 }
 
-void	ft_error(int *fd, char *av, char **path)
+
+void	ft_free_paths(char **paths)
 {
-	close(fd[0]);
-	close(fd[1]);
-	ft_free(path, NULL, NULL);
-	perror(av);
-	exit(EXIT_FAILURE);
+	int	i;
+
+	if (paths)
+	{
+		i = 0;
+		while (paths[i])
+		{
+			free(paths[i]);
+			paths[i] = NULL;
+			i++;
+		}
+		free(paths);
+		paths = NULL;
+	}
 }
