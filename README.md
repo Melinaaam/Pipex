@@ -1,5 +1,5 @@
 # 🇬🇧 Pipex : |
-```
+``
 ./pipex	Infile "cmd1" "cmd2" Outfile
 allows you to simulate the following operation :
 cat infile | cmd1 | cmd2 > outfile
@@ -27,7 +27,7 @@ Pipe()
 |-------waitpid;//pid1
 |-------waitpid;//pid2
 
-```
+``
 
 
 ## Undersatnd Unix processes in C : video
@@ -44,15 +44,13 @@ A pipe is a mechanism for "connecting communication" directly between processes,
 In Unix-like operating systems, every process except process 0 (the swapper) is created when another process executes the fork() system call. The process that invoked fork is the parent process and the newly created process is the child process. Every process (except process 0) has one parent process, but can have many child processes.
 
 To reproduce the operation of the pipe, we will need to know certain functions :
-```
+
 - Pipe
 - fork
 - dup2
 - excecve
 - waitpid
-```
 
-```
 Pipe : int pipe (pipefd[])
 
 creates a communication channel between two processes.
@@ -60,18 +58,14 @@ creates a communication channel between two processes.
 He create 2 file descriptor :
 pipefd[0] : read in the pipe
 pipefd[1] : write in the pipe
-```
 
-```
 fork() :
 
 creates a child processs by duplicating he current process.
 The current process continu his execution and the child process  execute his execution.
 
 The parent proess receive the PID of the child process as return from fork and the child process receive 0 as return from fork.
-```
 
-```
 excecve() :
 
 Replace the current process by a new rogram.
@@ -83,18 +77,14 @@ He takes 3 av :
 	- a string area of the environement
 
 Excecve never return expet error
-```
 
-```
 dup2() :
 
 dulicate a file descriptor to replace it with another. Useful for redirecting standard inputs and outputs.
 
 dup2(pipefd[1], STDOUT_FILENO)
 redirects standard output to the write pipe.
-```
 
-```
 waitpid() :
 
 In computer operating systems, a process (or task) may wait for another process to complete its execution.
@@ -102,7 +92,7 @@ In most systems, a parent process can create an independently executing child pr
 The parent process may then issue a wait system call, which suspends the execution of the parent process while the child executes.
 When the child process terminates, it returns an exit status to the operating system, which is then returned to the waiting parent process.
 The parent process then resumes execution.[1]
-```
+
 ## Test Ideas for Pipex
 
 1. **Basic Test: Simple Redirection**
@@ -186,14 +176,13 @@ Un processus est une instance en exécution d'un programme.
     Lorsqu'il est lancé, le système d'exploitation crée un processus et lui attribue un identifiant unique (PID), permettant de suivre son exécution.
 
 Pour reproduire le fonctionnement du pipe, nous avons besoin de connaitre certaines fonctions :
-```
+
 - Pipe
 - fork
 - dup2
 - excecve
 - waitpid
-```
-```
+
 ## Pipe
 
 Un pipe est un mécanisme permettant de connecter la sortie standard (stdout) d'un processus à l'entrée standard (stdin) d'un autre.
@@ -201,8 +190,7 @@ Un pipe est un mécanisme permettant de connecter la sortie standard (stdout) d'
     La fonction pipe(pipefd) crée deux descripteurs de fichiers :
         pipefd[0] : pour lire dans le pipe
         pipefd[1] : pour écrire dans le pipe
-```
-```
+
 ## fork()
 
 La fonction fork() permet de créer un processus enfant en dupliquant le processus courant.
@@ -210,8 +198,7 @@ La fonction fork() permet de créer un processus enfant en dupliquant le process
     Le processus parent reçoit le PID du processus enfant.
     Le processus enfant reçoit la valeur 0 en retour de fork().
     Cela permet au parent et à l'enfant de s'exécuter en parallèle.
-```
-```
+
 ## execve()
 
 La fonction execve() remplace le processus courant par un nouveau programme.
@@ -222,21 +209,18 @@ La fonction execve() remplace le processus courant par un nouveau programme.
         Un tableau de chaînes de caractères représentant les arguments.
         Un tableau de chaînes de caractères représentant l'environnement.
     execve() ne retourne normalement pas, sauf en cas d'erreur.
-```
-```
+
 ## dup2()
 
 La fonction dup2() duplique un descripteur de fichier en remplaçant un autre.
 
     Par exemple, dup2(pipefd[1], STDOUT_FILENO) redirige la sortie standard vers l'extrémité d'écriture du pipe.
-```
-```
+
 ## waitpid()
 
 La fonction waitpid() permet au processus parent d'attendre la fin d'exécution de ses processus enfants.
 
     Elle suspend l'exécution du parent jusqu'à ce qu'un enfant se termine et récupère alors son code de sortie.
-```
 
 ## Idées de Tests pour Pipex
 
@@ -277,4 +261,4 @@ La fonction waitpid() permet au processus parent d'attendre la fin d'exécution 
    - **Vérification :**
      Vérifier que le programme ne présente pas de fuites de mémoire et que la redirection se fait correctement.
 
-```bash
+bash
