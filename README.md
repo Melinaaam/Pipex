@@ -77,44 +77,6 @@ The parent process may then issue a wait system call, which suspends the executi
 When the child process terminates, it returns an exit status to the operating system, which is then returned to the waiting parent process.
 The parent process then resumes execution.[1]
 
-## Test for Pipex
-
-1. **Basic Test: Simple Redirection**
-   - **Command:**
-     ```bash
-     ./pipex infile "cat" "wc -l" outfile
-     ```
-   - **Verification:**
-     The `outfile` file should contain the number of lines from `infile`.
-
-2. **Test with Invalid Command**
-   - **Command:**
-     ```bash
-     ./pipex infile "invalid_command" "wc -l" outfile
-     ```
-   - **Verification:**
-     The program should handle the error and display a clear message without crashing.
-
-3. **Permissions Test on Files**
-   - **Case:**
-     Provide a non-existent input file or an output file in a directory where the user does not have write permissions.
-   - **Verification:**
-     The program should report a read or write error accordingly.
-
-4. **Test with Multiple Chained Commands**
-   - **Command:**
-     Try simple commands like `"grep"` and `"sort"`.
-     ```bash
-     ./pipex infile "grep pattern" "sort" outfile
-     ```
-   - **Verification:**
-     The `outfile` file should contain the sorted lines that match the searched pattern from `infile`.
-
-5. **Edge Case Tests**
-   - **Case:**
-     Test with large files or commands that produce a substantial amount of output.
-   - **Verification:**
-     Make sure there are no memory leaks and that the redirection is performed correctly.
 
 # 🇫🇷 Pipex : |
 
