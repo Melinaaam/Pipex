@@ -45,7 +45,7 @@ In Unix-like operating systems, every process except process 0 (the swapper) is 
 
 To reproduce the operation of the pipe, we will need to know certain functions : Pipe, fork, dup2, excecve, waitpid
 
-**Pipe : int pipe (pipefd[])**<br>
+**Pipe : int pipe (pipefd[])**
 
 Creates a communication channel between two processes.<br>
 He create 2 file descriptor :<br>
@@ -53,12 +53,11 @@ pipefd[0] : read in the pipe<br>
 pipefd[1] : write in the pipe<br>
 
 **fork() :**
-
 creates a child processs by duplicating he current process.<br>
 The current process continu his execution and the child process  execute his execution.<br>
 The parent proess receive the PID of the child process as return from fork and the child process receive 0 as return from fork.<br>
 
-**excecve() :**<br>
+**excecve() :**
 Replace the current process by a new rogram.<br>
 
 It use by the child process after call from fork, for executing a command.<br>
