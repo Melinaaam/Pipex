@@ -51,12 +51,12 @@ He create 2 file descriptor :<
 pipefd[0] : read in the pipe
 pipefd[1] : write in the pipe
 
-* fork() :
+* fork() :<br>
 creates a child processs by duplicating he current process.
 The current process continu his execution and the child process  execute his execution.
 The parent proess receive the PID of the child process as return from fork and the child process receive 0 as return from fork.
 
-* excecve() :
+* excecve() :<br>
 Replace the current process by a new rogram.
 It use by the child process after call from fork, for executing a command.
 He takes 3 av :
@@ -65,12 +65,12 @@ He takes 3 av :
 	- a string area of the environement<br>
 Excecve never return expet error
 
-* dup2() :
+* dup2() :<br>
 dulicate a file descriptor to replace it with another. Useful for redirecting standard inputs and outputs.
 dup2(pipefd[1], STDOUT_FILENO)
 redirects standard output to the write pipe.
 
-* waitpid() :
+* waitpid() :<br>
 In computer operating systems, a process (or task) may wait for another process to complete its execution.
 In most systems, a parent process can create an independently executing child process.
 The parent process may then issue a wait system call, which suspends the execution of the parent process while the child executes.
@@ -162,19 +162,19 @@ Un processus est une instance en exécution d'un programme.
 
 Pour reproduire le fonctionnement du pipe, nous avons besoin de connaitre certaines fonctions : Pipe, fork, dup2, excecve, waitpid
 
-* Pipe : int pipe (pipefd[])
+* Pipe : int pipe (pipefd[])<br>
 Un pipe est un mécanisme permettant de connecter la sortie standard (stdout) d'un processus à l'entrée standard (stdin) d'un autre.
     La fonction pipe(pipefd) crée deux descripteurs de fichiers :
         pipefd[0] : pour lire dans le pipe
         pipefd[1] : pour écrire dans le pipe
 
-* fork()
+* fork()<br>
 La fonction fork() permet de créer un processus enfant en dupliquant le processus courant.
     Le processus parent reçoit le PID du processus enfant.
     Le processus enfant reçoit la valeur 0 en retour de fork().
     Cela permet au parent et à l'enfant de s'exécuter en parallèle.
 
-* execve()
+* execve()<br>
 La fonction execve() remplace le processus courant par un nouveau programme.
     Elle est utilisée par le processus enfant après un fork() pour exécuter une commande.
     Elle prend trois arguments :
@@ -183,11 +183,11 @@ La fonction execve() remplace le processus courant par un nouveau programme.
         Un tableau de chaînes de caractères représentant l'environnement.
     execve() ne retourne normalement pas, sauf en cas d'erreur.
 
-* dup2()
+* dup2()<br>
 La fonction dup2() duplique un descripteur de fichier en remplaçant un autre.
     Par exemple, dup2(pipefd[1], STDOUT_FILENO) redirige la sortie standard vers l'extrémité d'écriture du pipe.
 
-* waitpid()
+* waitpid()<br>
 La fonction waitpid() permet au processus parent d'attendre la fin d'exécution de ses processus enfants.
     Elle suspend l'exécution du parent jusqu'à ce qu'un enfant se termine et récupère alors son code de sortie.
 
