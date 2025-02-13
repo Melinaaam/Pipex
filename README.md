@@ -1,4 +1,4 @@
-## 🇬🇧 Pipex : |
+# 🇬🇧 Pipex : |
 
 ```
 ./pipex	Infile "cmd1" "cmd2" Outfile
@@ -45,7 +45,7 @@ In Unix-like operating systems, every process except process 0 (the swapper) is 
 
 To reproduce the operation of the pipe, we will need to know certain functions : Pipe, fork, dup2, excecve, waitpid
 
-* Pipe : int pipe (pipefd[])
+**Pipe : int pipe (pipefd[])**
 
 creates a communication channel between two processes.
 
