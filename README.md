@@ -51,7 +51,7 @@ To reproduce the operation of the pipe, we will need to know certain functions :
 - excecve
 - waitpid
 
-Pipe : int pipe (pipefd[])
+** Pipe : int pipe (pipefd[])
 
 creates a communication channel between two processes.
 
@@ -59,7 +59,7 @@ He create 2 file descriptor :
 pipefd[0] : read in the pipe
 pipefd[1] : write in the pipe
 
-fork() :
+* fork() :
 
 creates a child processs by duplicating he current process.
 The current process continu his execution and the child process  execute his execution.
