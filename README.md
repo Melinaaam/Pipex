@@ -4,7 +4,7 @@
 allows you to simulate the following operation :
 cat infile | cmd1 | cmd2 > outfile
 
-``
+``````
 Pipe()
 |
 |
@@ -27,7 +27,7 @@ Pipe()
 |-------waitpid;//pid1
 |-------waitpid;//pid2
 
-``
+``````
 
 
 ## Undersatnd Unix processes in C : video
