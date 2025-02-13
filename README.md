@@ -163,25 +163,19 @@ Un processus est une instance en exécution d'un programme.
 Pour reproduire le fonctionnement du pipe, nous avons besoin de connaitre certaines fonctions : Pipe, fork, dup2, excecve, waitpid
 
 * Pipe : int pipe (pipefd[])
-
 Un pipe est un mécanisme permettant de connecter la sortie standard (stdout) d'un processus à l'entrée standard (stdin) d'un autre.
-
     La fonction pipe(pipefd) crée deux descripteurs de fichiers :
         pipefd[0] : pour lire dans le pipe
         pipefd[1] : pour écrire dans le pipe
 
 * fork()
-
 La fonction fork() permet de créer un processus enfant en dupliquant le processus courant.
-
     Le processus parent reçoit le PID du processus enfant.
     Le processus enfant reçoit la valeur 0 en retour de fork().
     Cela permet au parent et à l'enfant de s'exécuter en parallèle.
 
 * execve()
-
 La fonction execve() remplace le processus courant par un nouveau programme.
-
     Elle est utilisée par le processus enfant après un fork() pour exécuter une commande.
     Elle prend trois arguments :
         Le chemin de la commande.
@@ -190,15 +184,11 @@ La fonction execve() remplace le processus courant par un nouveau programme.
     execve() ne retourne normalement pas, sauf en cas d'erreur.
 
 * dup2()
-
 La fonction dup2() duplique un descripteur de fichier en remplaçant un autre.
-
     Par exemple, dup2(pipefd[1], STDOUT_FILENO) redirige la sortie standard vers l'extrémité d'écriture du pipe.
 
 * waitpid()
-
 La fonction waitpid() permet au processus parent d'attendre la fin d'exécution de ses processus enfants.
-
     Elle suspend l'exécution du parent jusqu'à ce qu'un enfant se termine et récupère alors son code de sortie.
 
 ## Idées de Tests pour Pipex
