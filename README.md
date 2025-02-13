@@ -77,7 +77,7 @@ The parent process may then issue a wait system call, which suspends the executi
 When the child process terminates, it returns an exit status to the operating system, which is then returned to the waiting parent process.
 The parent process then resumes execution.[1]
 
-## Test Ideas for Pipex
+## Test for Pipex
 
 1. **Basic Test: Simple Redirection**
    - **Command:**
@@ -191,7 +191,7 @@ La fonction dup2() duplique un descripteur de fichier en remplaçant un autre.
 La fonction waitpid() permet au processus parent d'attendre la fin d'exécution de ses processus enfants.
     Elle suspend l'exécution du parent jusqu'à ce qu'un enfant se termine et récupère alors son code de sortie.
 
-## Idées de Tests pour Pipex
+## Tests pour Pipex
 
 1. **Test de base : redirection simple**
    - **Commande :**
