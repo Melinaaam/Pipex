@@ -46,6 +46,7 @@ In Unix-like operating systems, every process except process 0 (the swapper) is 
 To reproduce the operation of the pipe, we will need to know certain functions : Pipe, fork, dup2, excecve, waitpid
 
 **Pipe : int pipe (pipefd[])**<br>
+
 Creates a communication channel between two processes.<br>
 He create 2 file descriptor :<br>
 pipefd[0] : read in the pipe<br>
@@ -55,11 +56,9 @@ pipefd[1] : write in the pipe<br>
 
 creates a child processs by duplicating he current process.<br>
 The current process continu his execution and the child process  execute his execution.<br>
-
 The parent proess receive the PID of the child process as return from fork and the child process receive 0 as return from fork.<br>
 
 **excecve() :**<br>
-
 Replace the current process by a new rogram.<br>
 
 It use by the child process after call from fork, for executing a command.<br>
@@ -67,18 +66,15 @@ He takes 3 av :<br>
 	- the ath of the command<br>
 	- a sring area who repreen argumets of the command<br>
 	- a string area of the environement<br>
-
 Excecve never return expet error<br>
 
-**dup2() :**
-
-dulicate a file descriptor to replace it with another. Useful for redirecting standard inputs and outputs.
+**dup2() :**<br>
+dulicate a file descriptor to replace it with another. Useful for redirecting standard inputs and outputs.<br>
 
 dup2(pipefd[1], STDOUT_FILENO)
-redirects standard output to the write pipe.
+redirects standard output to the write pipe.<br>
 
-* waitpid() :
-
+**waitpid() :**
 In computer operating systems, a process (or task) may wait for another process to complete its execution.
 In most systems, a parent process can create an independently executing child process.
 The parent process may then issue a wait system call, which suspends the execution of the parent process while the child executes.
