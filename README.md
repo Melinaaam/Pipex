@@ -146,7 +146,7 @@ The parent process then resumes execution.[1]
 
 Ce projet recrée le comportement d'une chaîne de pipes en Unix, permettant d'exécuter deux commandes consécutives avec redirection d'entrée et de sortie.
 Par exemple, l'exécution :
-
+```
 ./pipex infile "cmd1" "cmd2" outfile
 permet de simuler l'opération suivante :
 cat infile | cmd1 | cmd2 > outfile
@@ -169,6 +169,7 @@ Pipe()
    │             └── execve(path, **string_av, **env);
    │
    └── waitpid(); // Attend la fin des deux processus enfants
+```
 
 ## Vidéo d'Introduction aux Processus Unix en C
 ```
