@@ -1,6 +1,9 @@
-# Pipex : |
+# 🇬🇧 Pipex : |
 ```
 ./pipex	Infile "cmd1" "cmd2" Outfile
+allows you to simulate the following operation :
+cat infile | cmd1 | cmd2 > outfile
+
 
 Pipe()
 |
@@ -100,4 +103,162 @@ The parent process may then issue a wait system call, which suspends the executi
 When the child process terminates, it returns an exit status to the operating system, which is then returned to the waiting parent process.
 The parent process then resumes execution.[1]
 ```
+## Test Ideas for Pipex
 
+1. **Basic Test: Simple Redirection**
+   - **Command:**
+     ```bash
+     ./pipex infile "cat" "wc -l" outfile
+     ```
+   - **Verification:**
+     The `outfile` file should contain the number of lines from `infile`.
+
+2. **Test with Invalid Command**
+   - **Command:**
+     ```bash
+     ./pipex infile "invalid_command" "wc -l" outfile
+     ```
+   - **Verification:**
+     The program should handle the error and display a clear message without crashing.
+
+3. **Permissions Test on Files**
+   - **Case:**
+     Provide a non-existent input file or an output file in a directory where the user does not have write permissions.
+   - **Verification:**
+     The program should report a read or write error accordingly.
+
+4. **Test with Multiple Chained Commands**
+   - **Command:**
+     Try simple commands like `"grep"` and `"sort"`.
+     ```bash
+     ./pipex infile "grep pattern" "sort" outfile
+     ```
+   - **Verification:**
+     The `outfile` file should contain the sorted lines that match the searched pattern from `infile`.
+
+5. **Edge Case Tests**
+   - **Case:**
+     Test with large files or commands that produce a substantial amount of output.
+   - **Verification:**
+     Make sure there are no memory leaks and that the redirection is performed correctly.
+
+# 🇫🇷 Pipex : |
+
+Ce projet recrée le comportement d'une chaîne de pipes en Unix, permettant d'exécuter deux commandes consécutives avec redirection d'entrée et de sortie.
+Par exemple, l'exécution :
+
+./pipex infile "cmd1" "cmd2" outfile
+permet de simuler l'opération suivante :
+cat infile | cmd1 | cmd2 > outfile
+
+
+Pipe()
+   │
+   ├── pid1 = fork();
+   │      │
+   │      └── first_child; // Exécute cmd1
+   │             │
+   │             ├── dup2();  // Redirige l'entrée/sortie
+   │             └── execve(path, **string_av, **env);
+   │
+   ├── pid2 = fork();
+   │      │
+   │      └── second_child; // Exécute cmd2
+   │             │
+   │             ├── dup2();  // Redirige l'entrée/sortie
+   │             └── execve(path, **string_av, **env);
+   │
+   └── waitpid(); // Attend la fin des deux processus enfants
+
+## Vidéo d'Introduction aux Processus Unix en C
+```
+Pour comprendre le fonctionnement des processus Unix, regardez cette vidéo :
+Understanding Unix Processes in C
+```
+
+## Processus
+
+Un processus est une instance en exécution d'un programme.
+
+    Un programme est un fichier qui ne fait rien tant qu'il n'est pas lancé.
+    Lorsqu'il est lancé, le système d'exploitation crée un processus et lui attribue un identifiant unique (PID), permettant de suivre son exécution.
+
+## Pipe
+
+Un pipe est un mécanisme permettant de connecter la sortie standard (stdout) d'un processus à l'entrée standard (stdin) d'un autre.
+
+    La fonction pipe(pipefd) crée deux descripteurs de fichiers :
+        pipefd[0] : pour lire dans le pipe
+        pipefd[1] : pour écrire dans le pipe
+
+## fork()
+
+La fonction fork() permet de créer un processus enfant en dupliquant le processus courant.
+
+    Le processus parent reçoit le PID du processus enfant.
+    Le processus enfant reçoit la valeur 0 en retour de fork().
+    Cela permet au parent et à l'enfant de s'exécuter en parallèle.
+
+## execve()
+
+La fonction execve() remplace le processus courant par un nouveau programme.
+
+    Elle est utilisée par le processus enfant après un fork() pour exécuter une commande.
+    Elle prend trois arguments :
+        Le chemin de la commande.
+        Un tableau de chaînes de caractères représentant les arguments.
+        Un tableau de chaînes de caractères représentant l'environnement.
+    execve() ne retourne normalement pas, sauf en cas d'erreur.
+
+## dup2()
+
+La fonction dup2() duplique un descripteur de fichier en remplaçant un autre.
+
+    Par exemple, dup2(pipefd[1], STDOUT_FILENO) redirige la sortie standard vers l'extrémité d'écriture du pipe.
+
+## waitpid()
+
+La fonction waitpid() permet au processus parent d'attendre la fin d'exécution de ses processus enfants.
+
+    Elle suspend l'exécution du parent jusqu'à ce qu'un enfant se termine et récupère alors son code de sortie.
+
+## Idées de Tests pour Pipex
+
+1. **Test de base : redirection simple**
+   - **Commande :**
+     ```bash
+     ./pipex infile "cat" "wc -l" outfile
+     ```
+   - **Vérification :**
+     Le fichier `outfile` doit contenir le nombre de lignes du fichier `infile`.
+
+2. **Test avec commande non valide**
+   - **Commande :**
+     ```bash
+     ./pipex infile "invalid_command" "wc -l" outfile
+     ```
+   - **Vérification :**
+     Le programme doit gérer l'erreur et afficher un message explicite sans planter.
+
+3. **Test de permissions sur les fichiers**
+   - **Cas :**
+     Fournir un fichier d'entrée inexistant ou un fichier de sortie dans un répertoire où l'utilisateur n'a pas les droits d'écriture.
+   - **Vérification :**
+     Le programme doit signaler une erreur de lecture ou d'écriture.
+
+4. **Test avec plusieurs commandes chaînées**
+   - **Commande :**
+     Testez avec des commandes simples comme `"grep"` et `"sort"`.
+     ```bash
+     ./pipex infile "grep pattern" "sort" outfile
+     ```
+   - **Vérification :**
+     Le fichier `outfile` doit contenir les lignes triées correspondant au motif recherché dans `infile`.
+
+5. **Test des cas limites**
+   - **Cas :**
+     Tester avec des fichiers volumineux ou des commandes qui produisent beaucoup de sortie.
+   - **Vérification :**
+     Vérifier que le programme ne présente pas de fuites de mémoire et que la redirection se fait correctement.
+
+```bash
