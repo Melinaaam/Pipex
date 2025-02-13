@@ -46,31 +46,31 @@ In Unix-like operating systems, every process except process 0 (the swapper) is 
 To reproduce the operation of the pipe, we will need to know certain functions : Pipe, fork, dup2, excecve, waitpid
 
 **Pipe : int pipe (pipefd[])**<br>
-Creates a communication channel between two processes.
-He create 2 file descriptor :
-pipefd[0] : read in the pipe
-pipefd[1] : write in the pipe
+Creates a communication channel between two processes.<br>
+He create 2 file descriptor :<br>
+pipefd[0] : read in the pipe<br>
+pipefd[1] : write in the pipe<br>
 
-* fork() :
+**fork() :**
 
-creates a child processs by duplicating he current process.
-The current process continu his execution and the child process  execute his execution.
+creates a child processs by duplicating he current process.<br>
+The current process continu his execution and the child process  execute his execution.<br>
 
-The parent proess receive the PID of the child process as return from fork and the child process receive 0 as return from fork.
+The parent proess receive the PID of the child process as return from fork and the child process receive 0 as return from fork.<br>
 
-* excecve() :
+**excecve() :**<br>
 
-Replace the current process by a new rogram.
+Replace the current process by a new rogram.<br>
 
-It use by the child process after call from fork, for executing a command.
-He takes 3 av :
-	- the ath of the command
-	- a sring area who repreen argumets of the command
-	- a string area of the environement
+It use by the child process after call from fork, for executing a command.<br>
+He takes 3 av :<br>
+	- the ath of the command<br>
+	- a sring area who repreen argumets of the command<br>
+	- a string area of the environement<br>
 
-Excecve never return expet error
+Excecve never return expet error<br>
 
-* dup2() :
+**dup2() :**
 
 dulicate a file descriptor to replace it with another. Useful for redirecting standard inputs and outputs.
 
