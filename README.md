@@ -51,7 +51,7 @@ To reproduce the operation of the pipe, we will need to know certain functions :
 - excecve
 - waitpid
 
-**Pipe : int pipe (pipefd[])
+* Pipe : int pipe (pipefd[])
 
 creates a communication channel between two processes.
 
@@ -59,14 +59,14 @@ He create 2 file descriptor :
 pipefd[0] : read in the pipe
 pipefd[1] : write in the pipe
 
-*fork() :
+* fork() :
 
 creates a child processs by duplicating he current process.
 The current process continu his execution and the child process  execute his execution.
 
 The parent proess receive the PID of the child process as return from fork and the child process receive 0 as return from fork.
 
-excecve() :
+* excecve() :
 
 Replace the current process by a new rogram.
 
@@ -78,14 +78,14 @@ He takes 3 av :
 
 Excecve never return expet error
 
-dup2() :
+* dup2() :
 
 dulicate a file descriptor to replace it with another. Useful for redirecting standard inputs and outputs.
 
 dup2(pipefd[1], STDOUT_FILENO)
 redirects standard output to the write pipe.
 
-waitpid() :
+* waitpid() :
 
 In computer operating systems, a process (or task) may wait for another process to complete its execution.
 In most systems, a parent process can create an independently executing child process.
