@@ -43,13 +43,7 @@ A pipe is a mechanism for "connecting communication" directly between processes,
 
 In Unix-like operating systems, every process except process 0 (the swapper) is created when another process executes the fork() system call. The process that invoked fork is the parent process and the newly created process is the child process. Every process (except process 0) has one parent process, but can have many child processes.
 
-To reproduce the operation of the pipe, we will need to know certain functions :
-
-- Pipe
-- fork
-- dup2
-- excecve
-- waitpid
+To reproduce the operation of the pipe, we will need to know certain functions : Pipe, fork, dup2, excecve, waitpid
 
 * Pipe : int pipe (pipefd[])
 
@@ -176,15 +170,9 @@ Un processus est une instance en exécution d'un programme.
     Un programme est un fichier qui ne fait rien tant qu'il n'est pas lancé.
     Lorsqu'il est lancé, le système d'exploitation crée un processus et lui attribue un identifiant unique (PID), permettant de suivre son exécution.
 
-Pour reproduire le fonctionnement du pipe, nous avons besoin de connaitre certaines fonctions :
+Pour reproduire le fonctionnement du pipe, nous avons besoin de connaitre certaines fonctions : Pipe, fork, dup2, excecve, waitpid
 
-- Pipe
-- fork
-- dup2
-- excecve
-- waitpid
-
-Pipe : int pipe (pipefd[])
+* Pipe : int pipe (pipefd[])
 
 Un pipe est un mécanisme permettant de connecter la sortie standard (stdout) d'un processus à l'entrée standard (stdin) d'un autre.
 
@@ -192,7 +180,7 @@ Un pipe est un mécanisme permettant de connecter la sortie standard (stdout) d'
         pipefd[0] : pour lire dans le pipe
         pipefd[1] : pour écrire dans le pipe
 
-fork()
+* fork()
 
 La fonction fork() permet de créer un processus enfant en dupliquant le processus courant.
 
@@ -200,7 +188,7 @@ La fonction fork() permet de créer un processus enfant en dupliquant le process
     Le processus enfant reçoit la valeur 0 en retour de fork().
     Cela permet au parent et à l'enfant de s'exécuter en parallèle.
 
-execve()
+* execve()
 
 La fonction execve() remplace le processus courant par un nouveau programme.
 
@@ -211,13 +199,13 @@ La fonction execve() remplace le processus courant par un nouveau programme.
         Un tableau de chaînes de caractères représentant l'environnement.
     execve() ne retourne normalement pas, sauf en cas d'erreur.
 
-dup2()
+* dup2()
 
 La fonction dup2() duplique un descripteur de fichier en remplaçant un autre.
 
     Par exemple, dup2(pipefd[1], STDOUT_FILENO) redirige la sortie standard vers l'extrémité d'écriture du pipe.
 
-waitpid()
+* waitpid()
 
 La fonction waitpid() permet au processus parent d'attendre la fin d'exécution de ses processus enfants.
 
