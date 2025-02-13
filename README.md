@@ -45,7 +45,8 @@ In Unix-like operating systems, every process except process 0 (the swapper) is 
 
 To reproduce the operation of the pipe, we will need to know certain functions : Pipe, fork, dup2, excecve, waitpid
 
-**Pipe : int pipe (pipefd[])**
+###Pipe : int pipe (pipefd[])
+
 Creates a communication channel between two processes.
 He create 2 file descriptor :
 pipefd[0] : read in the pipe
