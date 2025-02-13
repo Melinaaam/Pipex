@@ -1,4 +1,4 @@
-# 🇬🇧 Pipex : |
+## 🇬🇧 Pipex : |
 
 ```
 ./pipex	Infile "cmd1" "cmd2" Outfile
