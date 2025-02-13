@@ -58,7 +58,6 @@ The parent proess receive the PID of the child process as return from fork and t
 
 * excecve() :
 Replace the current process by a new rogram.
-
 It use by the child process after call from fork, for executing a command.
 He takes 3 av :
 	- the ath of the command<br>
@@ -68,7 +67,6 @@ Excecve never return expet error
 
 * dup2() :
 dulicate a file descriptor to replace it with another. Useful for redirecting standard inputs and outputs.
-
 dup2(pipefd[1], STDOUT_FILENO)
 redirects standard output to the write pipe.
 
